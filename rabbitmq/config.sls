@@ -22,7 +22,17 @@
       - service: rabbitmq-server
 {% endfor %}
 
-# need to create users and then vhosts
+{% for name, policy in salt["pillar.get"]("rabbitmq:vhost", {}).items() %}
+rabbitmq_vhost_{{ name }}:
+  rabbitmq_vhost.present:
+    - name: {{ name }}
+    {% for value in policy %}
+    - {{ value }}
+    {% endfor %}
+    - require:
+      - service: rabbitmq-server
+{% endfor %}
+
 
 {% for name, user in salt["pillar.get"]("rabbitmq:user", {}).items() %}
 rabbitmq_user_{{ name }}:
@@ -35,13 +45,4 @@ rabbitmq_user_{{ name }}:
       - service: rabbitmq-server
 {% endfor %}
 
-{% for name, policy in salt["pillar.get"]("rabbitmq:vhost", {}).items() %}
-rabbitmq_vhost_{{ name }}:
-  rabbitmq_vhost.present:
-    - name: {{ name }}
-    {% for value in policy %}
-    - {{ value }}
-    {% endfor %}
-    - require:
-      - service: rabbitmq-server
-{% endfor %}
+
