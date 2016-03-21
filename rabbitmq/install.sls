@@ -29,6 +29,15 @@ rabbitmq_binary_tool_env:
     - require:
       - pkg: rabbitmq-server
 
+plugin_rabbitmq_delayed_message_exchange:
+  file.managed:
+    - name: /usr/lib/rabbitmq/lib/rabbitmq_server-3.6.1/plugins/rabbitmq_delayed_message_exchange-0.0.1.ez
+    - source: http://www.rabbitmq.com/community-plugins/v3.6.x/rabbitmq_delayed_message_exchange-0.0.1.ez
+    - source_hash: 'md5=10277778b4c08d3fa9847b1fd164d47b'
+    - require:
+      - pkg: rabbitmq-server
+      - file: rabbitmq_binary_tool_env
+
 rabbitmq_binary_tool_plugins:
   file.symlink:
     - makedirs: True
