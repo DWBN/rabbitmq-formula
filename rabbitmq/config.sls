@@ -13,6 +13,13 @@
       - service: rabbitmq-server
 {% endfor %}
 
+/etc/rabbitmq/rabbitmq.config:
+  file.managed:
+    - source: salt://rabbitmq/files/rabbitmq.config
+    - watch_in:
+      - service: rabbitmq-server
+
+
 {% for name, policy in salt["pillar.get"]("rabbitmq:policy", {}).items() %}
 {{ name }}:
   rabbitmq_policy.present:
