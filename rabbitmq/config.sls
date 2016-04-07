@@ -13,6 +13,29 @@
       - service: rabbitmq-server
 {% endfor %}
 
+
+
+{% if salt["pillar.get"]("rabbitmq:ssl") %}
+/etc/rabbitmq/ssl:
+  file.directory:
+    - user: root
+    - group: root
+    - dir_mode: 755
+    - file_mode: 644
+
+/etc/rabbitmq/ssl/cacert.pem:
+  file.managed:
+    - contents_pillar: rabbitmq:ssl:cacert
+
+/etc/rabbitmq/ssl/cert.pem:
+  file.managed:
+    - contents_pillar: rabbitmq:ssl:cert
+
+/etc/rabbitmq/ssl/key.pem:
+  file.managed:
+    - contents_pillar: rabbitmq:ssl:key    
+{% endif %}
+
 /etc/rabbitmq/rabbitmq.config:
   file.managed:
     - source: salt://rabbitmq/files/rabbitmq.config
