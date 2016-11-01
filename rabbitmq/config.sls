@@ -7,7 +7,6 @@
     - runas: root
     - require:
       - pkg: rabbitmq-server
-      - file: plugin_rabbitmq_delayed_message_exchange
       - file: rabbitmq_binary_tool_plugins
     - watch_in:
       - service: rabbitmq-server
